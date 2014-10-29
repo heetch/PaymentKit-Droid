@@ -153,7 +153,11 @@ public class FieldHolder extends RelativeLayout {
 	}
 
 	private void validateCard() {
-		long cardNumber = Long.parseLong(mCardHolder.getCardField().getText().toString().replaceAll("\\s", ""));
+        String cardNumberText = mCardHolder.getCardField().getText().toString();
+
+        if (cardNumberText.equals(""))
+            return;
+        long cardNumber = Long.parseLong(cardNumberText.replaceAll("\\s", ""));
 		if (ValidateCreditCard.isValid(cardNumber)) {
 			CardType cardType = ValidateCreditCard.matchCardType(cardNumber);
 			mCardIcon.setCardType(cardType);
