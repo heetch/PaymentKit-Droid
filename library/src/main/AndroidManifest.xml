@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-	package="com.paymentkit"
-	android:versionCode="1"
-	android:versionName="1.0" />
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.paymentkit"
+    android:minSdkVersion="8"
+    android:targetSdkVersion="19"
+    android:versionCode="1"
+    android:versionName="1.0">
+
+    <uses-sdk
+        android:minSdkVersion="8"
+        android:targetSdkVersion="19"
+        tools:replace="minSdkVersion, targetSdkVersion" />
+</manifest>
