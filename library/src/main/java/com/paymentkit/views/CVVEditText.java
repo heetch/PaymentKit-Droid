@@ -21,35 +21,35 @@ public class CVVEditText extends EditText {
     public static final int CCV_LENGTH = 3;
     public static final int CCV_AMEX_LENGTH = 4;
     private int cvvMaxLength = CCV_LENGTH;
-	
-	private static final String TAG = CVVEditText.class.getSimpleName();
-	
-	private CardEntryListener mListener;
+
+    private static final String TAG = CVVEditText.class.getSimpleName();
+
+    private CardEntryListener mListener;
 
     private ObjectAnimator shakeAnim;
 
     public CVVEditText(Context context, AttributeSet attrs) {
-		super(context, attrs);
-		setup();
-	}
-	
-	public CVVEditText(Context context) {
-		super(context);
-		setup();
-	}
-	
-	private void setup() {
-		addTextChangedListener(mTextWatcher);
-		setOnFocusChangeListener(mFocusListener);
-	}
+        super(context, attrs);
+        setup();
+    }
+
+    public CVVEditText(Context context) {
+        super(context);
+        setup();
+    }
+
+    private void setup() {
+        addTextChangedListener(mTextWatcher);
+        setOnFocusChangeListener(mFocusListener);
+    }
 
     public boolean isValid() {
         return cvvMaxLength == getText().toString().length();
     }
-	
-	public void setCardEntryListener(CardEntryListener listener) {
-		mListener = listener;
-	}
+
+    public void setCardEntryListener(CardEntryListener listener) {
+        mListener = listener;
+    }
 
     public void setCVVMaxLength(int val) {
         cvvMaxLength = val;
@@ -57,21 +57,21 @@ public class CVVEditText extends EditText {
         filters[0] = new InputFilter.LengthFilter(val);
         setFilters(filters);
     }
-	
-	private OnFocusChangeListener mFocusListener = new OnFocusChangeListener() {
-		@Override
-		public void onFocusChange(View v, boolean hasFocus) {
-			if(hasFocus) {
-				mListener.onCVVEntry();
-			}
-		}
-	};
-	
-	@Override
-	public InputConnection onCreateInputConnection(EditorInfo outAttrs) {
-		return new ZanyInputConnection(super.onCreateInputConnection(outAttrs),
-				true);
-	}
+
+    private OnFocusChangeListener mFocusListener = new OnFocusChangeListener() {
+        @Override
+        public void onFocusChange(View v, boolean hasFocus) {
+            if (hasFocus) {
+                mListener.onCVVEntry();
+            }
+        }
+    };
+
+    @Override
+    public InputConnection onCreateInputConnection(EditorInfo outAttrs) {
+        return new ZanyInputConnection(super.onCreateInputConnection(outAttrs),
+                true);
+    }
 
     public void indicateInvalidCVV() {
         if (shakeAnim != null) shakeAnim.end();
@@ -82,34 +82,35 @@ public class CVVEditText extends EditText {
     /*
      * See "android EditText delete(backspace) key event" on stackoverflow
      */
-	private class ZanyInputConnection extends InputConnectionWrapper {
+    private class ZanyInputConnection extends InputConnectionWrapper {
 
-		public ZanyInputConnection(InputConnection target, boolean mutable) {
-			super(target, mutable);
-		}
+        public ZanyInputConnection(InputConnection target, boolean mutable) {
+            super(target, mutable);
+        }
 
-		@Override
-		public boolean sendKeyEvent(KeyEvent event) {
+        @Override
+        public boolean sendKeyEvent(KeyEvent event) {
             boolean shouldConsume = false;
-			if (event.getAction() == KeyEvent.ACTION_DOWN) {
+            if (event.getAction() == KeyEvent.ACTION_DOWN) {
                 switch (event.getKeyCode()) {
                     case KeyEvent.KEYCODE_DEL:
-                        if(getSelectionStart() == 0) {
+                        if (getSelectionStart() == 0) {
                             mListener.onBackFromCVV();
                             shouldConsume = true;
                         }
                         break;
                     case KeyEvent.KEYCODE_ENTER:
                         shouldConsume = true;
-                        mListener.onCVVEntryComplete(); break;
+                        mListener.onCVVEntryComplete();
+                        break;
                 }
             }
-			return shouldConsume ? true : super.sendKeyEvent(event);
-		}
+            return shouldConsume ? true : super.sendKeyEvent(event);
+        }
 
         @Override
         public boolean performEditorAction(int editorAction) {
-                boolean shouldConsume = false;
+            boolean shouldConsume = false;
             switch (editorAction) {
                 case EditorInfo.IME_ACTION_DONE:
                     shouldConsume = true;
@@ -119,38 +120,39 @@ public class CVVEditText extends EditText {
         }
 
         @Override
-		public boolean deleteSurroundingText(int beforeLength, int afterLength) {
-			// magic: in latest Android, deleteSurroundingText(1, 0) will be
-			// called for backspace
-			if (beforeLength == 1 && afterLength == 0) {
-				// backspace
-				return sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN,
-						KeyEvent.KEYCODE_DEL))
-						&& sendKeyEvent(new KeyEvent(KeyEvent.ACTION_UP,
-								KeyEvent.KEYCODE_DEL));
-			}
+        public boolean deleteSurroundingText(int beforeLength, int afterLength) {
+            // magic: in latest Android, deleteSurroundingText(1, 0) will be
+            // called for backspace
+            if (beforeLength == 1 && afterLength == 0) {
+                // backspace
+                return sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN,
+                        KeyEvent.KEYCODE_DEL))
+                        && sendKeyEvent(new KeyEvent(KeyEvent.ACTION_UP,
+                        KeyEvent.KEYCODE_DEL));
+            }
 
-			return super.deleteSurroundingText(beforeLength, afterLength);
-		}
-	}
-	
-	private TextWatcher mTextWatcher = new TextWatcher() {
-		@Override
-		public void afterTextChanged(Editable s) {
-			if (s.length() == cvvMaxLength) {
-				mListener.onCVVEntryComplete();
-			}
-		}
+            return super.deleteSurroundingText(beforeLength, afterLength);
+        }
+    }
 
-		@Override
-		public void beforeTextChanged(CharSequence s, int start, int count,
-				int after) {
-		}
+    private TextWatcher mTextWatcher = new TextWatcher() {
+        @Override
+        public void afterTextChanged(Editable s) {
+            if (s.length() == cvvMaxLength) {
+                //We don't want auto validation in our implementation
+                //mListener.onCVVEntryComplete();
+            }
+        }
 
-		@Override
-		public void onTextChanged(CharSequence s, int start, int before,
-				int count) {
-		}
-	};
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count,
+                                      int after) {
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before,
+                                  int count) {
+        }
+    };
 
 }
