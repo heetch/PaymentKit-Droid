@@ -8,12 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
 
-import com.nineoldandroids.animation.Animator;
-import com.nineoldandroids.animation.AnimatorListenerAdapter;
-import com.nineoldandroids.animation.ObjectAnimator;
 import com.paymentkit.R;
 import com.paymentkit.ValidateCreditCard;
-import com.paymentkit.util.AnimUtils;
 import com.paymentkit.util.ViewUtils;
 import com.paymentkit.views.FieldHolder.CardEntryListener;
 
@@ -98,16 +94,17 @@ public class CardNumHolder extends FrameLayout {
 		return i;
 	}
 
-	public ObjectAnimator indicateInvalidCardNum() {
+	public void indicateInvalidCardNum() {
 		mTopItem = mCardNumberEditText;
-		ObjectAnimator shakeAnim = AnimUtils.getShakeAnimation(getCardField(), false);
+		getCardField().setTextColor(Color.RED);
+		/*ObjectAnimator shakeAnim = AnimUtils.getShakeAnimation(getCardField(), false);
 		shakeAnim.addListener(new AnimatorListenerAdapter() {
 			@Override
 			public void onAnimationEnd(Animator anim) {
 				mTopItem = null;
 			}
 		});
-		return shakeAnim;
+		return shakeAnim;*/
 	}
 
 	public CardNumEditText getCardField() {

@@ -163,10 +163,7 @@ public class FieldHolder extends RelativeLayout {
 			mCardIcon.setCardType(cardType);
 			transitionToExtraFields();
 		} else {
-			ObjectAnimator shakeAnim = mCardHolder.indicateInvalidCardNum();
-			if (!shakeAnim.isRunning()) {
-				shakeAnim.start();
-			}
+			mCardHolder.indicateInvalidCardNum();
 		}
 	}
 
