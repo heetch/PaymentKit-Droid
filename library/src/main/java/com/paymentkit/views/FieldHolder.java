@@ -238,7 +238,9 @@ public class FieldHolder extends RelativeLayout {
 	CardEntryListener mCardEntryListener = new CardEntryListener() {
 		@Override
 		public void onCardNumberInputComplete() {
-			validateCard();
+			if (mCardHolder.isAnimationOver()) {
+				validateCard();
+			}
 		}
 
 		@Override

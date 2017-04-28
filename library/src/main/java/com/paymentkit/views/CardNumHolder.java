@@ -27,6 +27,7 @@ public class CardNumHolder extends FrameLayout {
 	private CardEntryListener mCardEntryListener;
 	private View mTopItem;
 	private int mSwitchIndex = 0;
+	private boolean animationOver = true;
 
 	public CardNumHolder(Context context) {
 		super(context);
@@ -99,12 +100,14 @@ public class CardNumHolder extends FrameLayout {
 	}
 
 	public void indicateInvalidCardNum() {
+		animationOver = false;
 		mTopItem = mCardNumberEditText;
 		ObjectAnimator shakeAnim = AnimUtils.getShakeAnimation(getCardField(), false);
 		shakeAnim.addListener(new AnimatorListenerAdapter() {
 			@Override
 			public void onAnimationEnd(Animator anim) {
 				mTopItem = null;
+				animationOver = true;
 			}
 		});
 		shakeAnim.start();
@@ -142,4 +145,8 @@ public class CardNumHolder extends FrameLayout {
             mCardNumberEditText.setTextColor(Color.DKGRAY);
         }
     }
+
+	public boolean isAnimationOver() {
+		return animationOver;
+	}
 }
