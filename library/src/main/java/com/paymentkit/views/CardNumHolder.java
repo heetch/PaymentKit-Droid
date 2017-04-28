@@ -98,7 +98,7 @@ public class CardNumHolder extends FrameLayout {
 		return i;
 	}
 
-	public void indicateInvalidCardNum() {
+	public ObjectAnimator indicateInvalidCardNum() {
 		mTopItem = mCardNumberEditText;
 		ObjectAnimator shakeAnim = AnimUtils.getShakeAnimation(getCardField(), false);
 		shakeAnim.addListener(new AnimatorListenerAdapter() {
@@ -107,7 +107,7 @@ public class CardNumHolder extends FrameLayout {
 				mTopItem = null;
 			}
 		});
-		shakeAnim.start();
+		return shakeAnim;
 	}
 
 	public CardNumEditText getCardField() {
