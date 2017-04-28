@@ -97,14 +97,6 @@ public class CardNumHolder extends FrameLayout {
 	public void indicateInvalidCardNum() {
 		mTopItem = mCardNumberEditText;
 		getCardField().setTextColor(Color.RED);
-		/*ObjectAnimator shakeAnim = AnimUtils.getShakeAnimation(getCardField(), false);
-		shakeAnim.addListener(new AnimatorListenerAdapter() {
-			@Override
-			public void onAnimationEnd(Animator anim) {
-				mTopItem = null;
-			}
-		});
-		return shakeAnim;*/
 	}
 
 	public CardNumEditText getCardField() {
